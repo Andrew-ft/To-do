@@ -29,7 +29,11 @@ const todoController = {
                 return res.status(400).json({ message: "Invalid ID" });
             }
 
-            let newTodo = await todoModel.findByIdAndUpdate(id, { ...req.body });
+            let newTodo = await todoModel.findByIdAndUpdate(
+                id, 
+                { ...req.body },
+                { new: true } // Add this option to return the updated document
+            );
             if(!newTodo) {
                 return res.status(404).json({ message: "Todo not found" });
             }
@@ -37,7 +41,7 @@ const todoController = {
         } catch (e) {
             return res.status(500).json({ message: "Internal Server Error" });
         }
-    }, 
+    },
     destroy: async(req, res) => {
         try {
             let id = req.params.id;
