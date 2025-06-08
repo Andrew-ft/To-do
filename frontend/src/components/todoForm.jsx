@@ -1,9 +1,12 @@
 import React from 'react'
 import TodoList from './todoList'
 
-export default function todoForm() {
+export default function TodoForm() {
   return (
     <div>
+        <div>
+          0 items remaining
+        </div>
         <div>
             <span>Check All</span>
             <span>Clear Completed (0)</span>

@@ -32,7 +32,7 @@ const todoController = {
             let newTodo = await todoModel.findByIdAndUpdate(
                 id, 
                 { ...req.body },
-                { new: true } // Add this option to return the updated document
+                { new: true } 
             );
             if(!newTodo) {
                 return res.status(404).json({ message: "Todo not found" });
