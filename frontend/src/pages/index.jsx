@@ -4,7 +4,14 @@ import TodoInput from '../components/todoInput';
 import TodoList from '../components/todoList';
 import ProgressBar from '../components/progressBar';
 
-const API_URL = import.meta.env.DEV ? '/api' : import.meta.env.VITE_API_URL;
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+
+const API_URL = import.meta.env.DEV 
+  ? 'http://localhost:5000/api' 
+  : 'https://to-do-production-92f0.up.railway.app/api';
+
+console.log('Current API URL:', API_URL);
 
 export default function Index() {
   const [todos, setTodos] = useState([]);
@@ -17,14 +24,25 @@ export default function Index() {
   const [allChecked, setAllChecked] = useState(false);
 
   useEffect(() => {
-    axios.get(`${API_URL}/todos`)
+    console.log('Fetching todos from:', `${API_URL}/todos`);
+    axios.get(`${API_URL}/todos`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
       .then((res) => {
+        console.log('Todos fetched successfully:', res.data);
         setTodos(res.data);
         setLoading(false);
         setError(null);
       })
       .catch(error => {
         console.log('Error fetching todos:', error);
+        console.log('Error details:', {
+          message: error.message,
+          response: error.response,
+          request: error.request
+        });
         setError('Failed to fetch todos');
         setLoading(false);
       });
