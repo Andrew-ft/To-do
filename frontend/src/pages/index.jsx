@@ -3,7 +3,8 @@ import axios from 'axios';
 import TodoInput from '../components/todoInput';
 import TodoList from '../components/todoList';
 import ProgressBar from '../components/progressBar';
-const API_URL = import.meta.env.VITE_API_URL;
+
+const API_URL = import.meta.env.DEV ? '/api' : import.meta.env.VITE_API_URL;
 
 export default function Index() {
   const [todos, setTodos] = useState([]);
@@ -13,10 +14,10 @@ export default function Index() {
   const [priority, setPriority] = useState('low');
   const [completed, setCompleted] = useState(false);
   const [filter, setFilter] = useState('all');
-  const [allChecked, setAllChecked] = useState(false); // NEW
+  const [allChecked, setAllChecked] = useState(false);
 
   useEffect(() => {
-    axios.get('${API_URL}/todos')
+    axios.get(`${API_URL}/todos`)
       .then((res) => {
         setTodos(res.data);
         setLoading(false);
@@ -30,7 +31,7 @@ export default function Index() {
   }, []);
 
   const addTodo = (todo) => {
-    axios.post('${API_URL}/todos', todo)
+    axios.post(`${API_URL}/todos`, todo)
       .then(response => {
         setTodos(prevState => [response.data, ...prevState]);
         setError(null);
@@ -94,7 +95,7 @@ export default function Index() {
       console.log('Error updating todos:', error);
       setError('Failed to update todos');
 
-      axios.get('${API_URL}/todos')
+      axios.get(`${API_URL}/todos`)
         .then(response => {
           setTodos(response.data);
         })
@@ -121,7 +122,7 @@ export default function Index() {
       console.log('Error clearing todos:', error);
       setError('Failed to clear todos');
 
-      axios.get('${API_URL}/todos')
+      axios.get(`${API_URL}/todos`)
         .then(response => {
           setTodos(response.data);
         })
