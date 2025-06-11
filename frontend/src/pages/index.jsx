@@ -1,50 +1,49 @@
-import React from 'react'
-import TodoInput from '../components/todoInput'
-import TodoList from '../components/todoList'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import TodoInput from '../components/todoInput';
+import TodoList from '../components/todoList';
 import ProgressBar from '../components/progressBar';
 
 export default function Index() {
-
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState('');
-  let [priority, setPriority] = useState('low');
+  const [priority, setPriority] = useState('low');
   const [completed, setCompleted] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [allChecked, setAllChecked] = useState(false); // NEW
 
   useEffect(() => {
     axios.get('/api/todos')
-    .then((res) => {
-      setTodos(res.data);
-      setLoading(false);
-      setError(null);
-    })
-    .catch(error => {
-      console.log('Error fetching todos:', error);
-      setError('Failed to fetch todos');
-      setLoading(false);    
-    })
+      .then((res) => {
+        setTodos(res.data);
+        setLoading(false);
+        setError(null);
+      })
+      .catch(error => {
+        console.log('Error fetching todos:', error);
+        setError('Failed to fetch todos');
+        setLoading(false);
+      });
   }, []);
 
-  let addTodo = (todo) => {
+  const addTodo = (todo) => {
     axios.post('/api/todos', todo)
-    .then(response => {
-      setTodos(prevState => [response.data, ...prevState]);
-      setError(null);
-      setTitle('');
-      setPriority('low');
-      setCompleted(false);
-    })
-    .catch(error => {
-      console.log('Error adding todo:', error);
-      setError('Failed to add todo');
-    })
-  }
+      .then(response => {
+        setTodos(prevState => [response.data, ...prevState]);
+        setError(null);
+        setTitle('');
+        setPriority('low');
+        setCompleted(false);
+      })
+      .catch(error => {
+        console.log('Error adding todo:', error);
+        setError('Failed to add todo');
+      });
+  };
 
-  let deleteTodo = (todoId) => {
+  const deleteTodo = (todoId) => {
     axios.delete(`/api/todos/${todoId}`)
       .then(() => {
         setTodos(prevState => prevState.filter(todo => todo._id !== todoId));
@@ -54,10 +53,10 @@ export default function Index() {
         setError('Failed to delete todo');
       });
   };
-  
-  let updateTodo = (id, updatedData) => {
+
+  const updateTodo = (id, updatedData) => {
     axios.patch(`/api/todos/${id}`, updatedData)
-      .then((res) => {
+      .then(() => {
         setTodos(prevState =>
           prevState.map(todo =>
             todo._id === id ? { ...todo, ...updatedData } : todo
@@ -71,30 +70,29 @@ export default function Index() {
       });
   };
 
-  let remainingCount  = todos.filter(t => !t.completed).length;
-
   const checkAll = async () => {
     try {
-      const allCompleted = !todos.every(todo => todo.completed);
+      const newCompletedStatus = !allChecked;
       const updatedTodos = todos.map(todo => ({
         ...todo,
-        completed: allCompleted
+        completed: newCompletedStatus
       }));
       setTodos(updatedTodos);
 
       await Promise.all(
         todos.map(todo =>
           axios.patch(`/api/todos/${todo._id}`, {
-            completed: allCompleted
+            completed: newCompletedStatus
           })
         )
       );
 
+      setAllChecked(newCompletedStatus);
       setError(null);
     } catch (error) {
       console.log('Error updating todos:', error);
       setError('Failed to update todos');
-      
+
       axios.get('/api/todos')
         .then(response => {
           setTodos(response.data);
@@ -108,7 +106,7 @@ export default function Index() {
   const clearCompleted = async () => {
     try {
       const completedTodos = todos.filter(todo => todo.completed);
-      
+
       setTodos(prevTodos => prevTodos.filter(todo => !todo.completed));
 
       await Promise.all(
@@ -121,19 +119,19 @@ export default function Index() {
     } catch (error) {
       console.log('Error clearing todos:', error);
       setError('Failed to clear todos');
-      
+
       axios.get('/api/todos')
         .then(response => {
           setTodos(response.data);
         })
         .catch(err => {
-          console.log('Error fetching todosss:', err);
+          console.log('Error fetching todos:', err);
         });
     }
-  }
+  };
 
   const filteredTodos = () => {
-    switch(filter) {
+    switch (filter) {
       case 'active':
         return todos.filter(todo => !todo.completed);
       case 'completed':
@@ -141,63 +139,74 @@ export default function Index() {
       default:
         return todos;
     }
-  }
+  };
 
-  const showActive = () => {
-    setFilter('active');
-  }
+  const showActive = () => setFilter('active');
+  const showCompleted = () => setFilter('completed');
+  const showAll = () => setFilter('all');
 
-  const showCompleted = () => {
-    setFilter('completed');
-  }
-
-  const showAll = () => {
-    setFilter('all');
-  }
-
+  const remainingCount = todos.filter(t => !t.completed).length;
   const activeStatusTodos = todos.filter(todo => !todo.completed).length;
   const completedStatusTodos = todos.filter(todo => todo.completed).length;
   const totalTodos = todos.length;
-  const completionPercentage = totalTodos === 0 ? 0 : Math.round((completedStatusTodos / totalTodos) * 100);
+  const completionPercentage = totalTodos === 0
+    ? 0
+    : Math.round((completedStatusTodos / totalTodos) * 100);
 
   return (
-    <div className='bg-blue-500'>
-        <TodoInput addTodo = {addTodo} 
-        title = {title} setTitle = {setTitle}
-        priority = {priority} setPriority = {setPriority}
-        completed = {completed} setCompleted = {setCompleted}/>
-        
-        <div>
-          <div>
-            {remainingCount} item{remainingCount > 1 ? 's' : ''} remaining
-          </div>
-          <div>
-              <button onClick={checkAll}>Check All</button>
-              <button onClick={clearCompleted}>Clear Completed</button>
-          </div>
-          <TodoList 
-            todos={filteredTodos()} 
-            error={error} 
-            loading={loading} 
-            deleteTodo={deleteTodo} 
-            updateTodo={updateTodo} 
-          />
-          <div>
-              <span>{activeStatusTodos} active</span>
-              <span>{completedStatusTodos} completed</span> 
-              <span>{totalTodos} total</span>
-              <div>
-                <ProgressBar percentage={completionPercentage} />
-                <span>{completionPercentage}%</span>
-              </div>
-          </div>
-          <div>
-              <button onClick={showAll}>All</button>
-              <button onClick={showActive}>Active</button>
-              <button onClick={showCompleted}>Completed</button>
-          </div>
+    <div className=''>
+      <TodoInput
+        addTodo={addTodo}
+        title={title}
+        setTitle={setTitle}
+        priority={priority}
+        setPriority={setPriority}
+        completed={completed}
+        setCompleted={setCompleted}
+      />
+
+      <div className='text-center text-white text-sm font-medium opacity-50 my-4'>
+        {remainingCount} item{remainingCount !== 1 ? 's' : ''} remaining
       </div>
 
+      <div className='bg-zinc-700 bg-opacity-10 shadow-md w-2/3 mx-auto p-5 text-white rounded-xl'>
+        <div className='flex justify-between w-4/5 mx-auto'>
+          <button onClick={checkAll} className='text-sm font-semibold btn btn-soft'>
+            {allChecked ? 'Uncheck All' : 'Check All'}
+          </button>
+          <button onClick={clearCompleted} className='text-sm font-semibold text-red-500'>
+            Clear Completed
+          </button>
+        </div>
+
+        <div className="h-px bg-gray-700 w-full my-4"></div>
+
+        <TodoList
+          todos={filteredTodos()}
+          error={error}
+          loading={loading}
+          deleteTodo={deleteTodo}
+          updateTodo={updateTodo}
+        />
+
+        <div className='flex justify-center gap-7 text-sm'>
+          <span>{activeStatusTodos} active</span>
+          <span>{completedStatusTodos} completed</span>
+          <span>{totalTodos} total</span>
+          <div className='flex items-center gap-2'>
+            <ProgressBar percentage={completionPercentage} />
+            <span>{completionPercentage}%</span>
+          </div>
+        </div>
+
+        <div className='flex justify-center mt-5'>
+          <div className='join'>
+            <button onClick={showAll} className='btn join-item btn-soft'>All</button>
+            <button onClick={showActive} className='btn join-item btn-soft'>Active</button>
+            <button onClick={showCompleted} className='btn join-item btn-soft'>Completed</button>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

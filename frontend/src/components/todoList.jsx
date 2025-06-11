@@ -10,6 +10,7 @@ export default function TodoList({ todos, error, loading, deleteTodo, updateTodo
         <div>
           <Todo todos = {todos} error = {error} deleteTodo={deleteTodo} updateTodo={updateTodo} loading = {loading} key={todos._id}/>
         </div>
+        <div className="h-px bg-gray-700 w-full my-4"></div>
     </div>
   )
 }
