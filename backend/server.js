@@ -9,15 +9,21 @@ const app = express();
 
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
-const allowedOrigins = ["http://localhost:5173", ENV.CLIENT_URL];
+const allowedOrigins = ["http://localhost:5173", process.env.CLIENT_URL];
 
 // Middleware
 app.use(cors({
   origin: allowedOrigins,
-  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  // allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
+
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin);
+  console.log('Response Headers (after CORS):', res.getHeaders());
+  next();
+});
 
 app.use(express.json());
 app.use(morgan('dev'));
