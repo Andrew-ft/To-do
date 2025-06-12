@@ -1,5 +1,5 @@
 import express from 'express';
-import 'dotenv/config';
+import 'dotenv/config'; // You already have this — it's good
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -8,9 +8,9 @@ import todoRoutes from './routes/todoRoutes.js';
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.Mongo_URL;
+const MONGO_URI = process.env.MONGO_URL;
 
-// CORS Middleware
+// Middleware
 app.use(cors({
   origin: ['https://to-do-nu-lyart.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -24,7 +24,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api/todos', todoRoutes);
 
-// Connect to MongoDB and start server
+// MongoDB connection and server start
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
