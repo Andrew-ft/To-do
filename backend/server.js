@@ -10,6 +10,7 @@ const app = express();
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 const allowedOrigins = ["http://localhost:5173", process.env.CLIENT_URL];
+console.log('Server starting with allowedOrigins:', allowedOrigins); 
 
 // Middleware
 app.use(cors({
