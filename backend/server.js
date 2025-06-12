@@ -13,17 +13,19 @@ const allowedOrigins = ["http://localhost:5173", process.env.CLIENT_ID];
 console.log('Server starting with allowedOrigins:', allowedOrigins); 
 
 // Middleware
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use((req, res, next) => {
   res.set({
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-      "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "*",
+    "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
   });
-
-  next();
-});
-
-app.use((req, res, next) => {
   console.log('Request Origin:', req.headers.origin); 
   console.log('Response Headers (after CORS):', res.getHeaders());
   next();
