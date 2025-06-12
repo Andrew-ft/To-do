@@ -10,8 +10,12 @@ const app = express();
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
-// Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://todo-khaki-psi.vercel.app', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true,
+}));
+
 app.use((req, res, next) => {
   console.log('Request Origin:', req.headers.origin);
   console.log('Response Headers:', res.getHeaders());
@@ -24,7 +28,6 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api/todos', todoRoutes);
 
-// MongoDB connection and server start
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
