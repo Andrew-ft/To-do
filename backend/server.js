@@ -11,18 +11,7 @@ const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
-app.use(cors({
-  origin: [
-    'https://to-do-nu-lyart.vercel.app',
-    'https://todo-khaki-psi.vercel.app',
-    'http://localhost:5173',
-    'http://localhost:5174'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200 // Optional: ensures OPTIONS preflight works
-}));
+app.use(cors());
 app.use((req, res, next) => {
   console.log('Request Origin:', req.headers.origin);
   console.log('Response Headers:', res.getHeaders());
