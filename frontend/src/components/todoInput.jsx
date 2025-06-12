@@ -51,7 +51,7 @@ export default function TodoInput({ title, setTitle, priority, setPriority, comp
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="ml-4 text-sm bg-transparent text-white rounded-md px-1 py-1 focus:outline-none hover:bg-zinc-600 transition-all"
+              className="ml-4 text-sm bg-transparent text-white rounded-md px-1 py-1 focus:outline-none bg-zinc-700 transition-all"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
