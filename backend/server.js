@@ -20,8 +20,14 @@ app.use(cors({
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200 // Optional: ensures OPTIONS preflight works
 }));
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin);
+  console.log('Response Headers:', res.getHeaders());
+  next();
+});
 
 app.use(express.json());
 app.use(morgan('dev'));
