@@ -18,19 +18,17 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors()); // Handle preflight
-
 app.use(express.json());
 app.use(morgan('dev'));
 
 // Routes
 app.use('/api/todos', todoRoutes);
 
-// MongoDB Connection & Server Start
+// Connect to MongoDB and start server
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
