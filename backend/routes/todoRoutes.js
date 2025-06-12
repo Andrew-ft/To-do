@@ -3,7 +3,7 @@ import todoController from '../controllers/todoController.js';
 import handleErrorMessage from '../middlewares/handleErrorMessage.js';
 import { body } from 'express-validator';
 
-const router= express.Router();
+const router = express.Router();
 
 router.post('',[
     body('title').notEmpty(),
