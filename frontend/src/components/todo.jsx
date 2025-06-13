@@ -38,7 +38,7 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
 
     return (
         <div>
-            {error && <p>Failed to fetch todos</p>}
+            {error && <p className='flex justify-center'>Failed to fetch todos</p>}
 
             {loading && (
                 <span className="loading loading-infinity loading-xl flex justify-center bg-gradient-to-tr from-fuchsia-500 via-purple-500 to-indigo-500 mx-auto"></span>
@@ -47,7 +47,7 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
             {!error && !loading && todos.length >= 1 ? (
                 todos.map((todo) =>
                     todo._id ? (
-                        <div key={todo._id} className="flex justify-between items-center mx-5 py-2 border-white/10">
+                        <div key={todo._id} className="flex justify-between items-center mx-5 py-2 bg-pruple-500 border-white/10">
                             <div className="flex gap-3 items-center">
                                 <label className="relative cursor-pointer">
                                     <input
