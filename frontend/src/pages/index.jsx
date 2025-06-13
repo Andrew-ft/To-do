@@ -173,8 +173,8 @@ export default function Index() {
         {remainingCount} item{remainingCount !== 1 ? 's' : ''} remaining
       </div>
 
-      <div className='bg-zinc-700 bg-opacity-10 shadow-md w-2/3 mx-auto p-5 text-white rounded-xl'>
-        <div className='flex justify-between w-4/5 mx-auto'>
+      <div className='w-full sm:w-2/3 mx-auto p-5 text-white rounded-xl bg-zinc-700 bg-opacity-10 shadow-md'>
+        <div className='flex justify-between w-4/5 mx-auto gap-100'>
           <button onClick={checkAll} className='text-sm font-semibold btn btn-soft'>
             {allChecked ? 'Uncheck All' : 'Check All'}
           </button>
@@ -193,7 +193,7 @@ export default function Index() {
           updateTodo={updateTodo}
         />
 
-        <div className='flex justify-center gap-7 text-sm'>
+        <div className='flex flex-wrap justify-center gap-7 text-sm'>
           <span>{activeStatusTodos} active</span>
           <span>{completedStatusTodos} completed</span>
           <span>{totalTodos} total</span>

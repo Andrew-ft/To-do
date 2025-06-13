@@ -34,7 +34,7 @@ export default function TodoInput({ title, setTitle, priority, setPriority, comp
       </div>
 
       <div className="flex justify-center">
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
+        <form onSubmit={handleSubmit} className="w-[90%] sm:w-full sm:max-w-md">
           <div className="relative flex items-center bg-zinc-700 bg-opacity-10 rounded-lg shadow-md overflow-hidden px-4 py-2 focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-300">
             <input
               type="text"
@@ -45,7 +45,7 @@ export default function TodoInput({ title, setTitle, priority, setPriority, comp
               }}
               onKeyPress={handleKeyPress}
               placeholder="Add a new task..."
-              className="flex-grow bg-transparent text-white placeholder:text-white/40 focus:outline-none text-sm"
+              className="flex flex-grow bg-transparent text-white placeholder:text-white/40 focus:outline-none text-sm"
             />
 
             <select
