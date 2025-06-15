@@ -37,8 +37,8 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
     };
 
     return (
-        <div>
-            {error && <p className='flex justify-center'>Failed to fetch todos</p>}
+        <div className='form-color'>
+            {error && <p className='flex form-color justify-center'>Failed to fetch todos</p>}
 
             {loading && (
                 <span className="loading loading-infinity loading-xl flex justify-center bg-gradient-to-tr from-fuchsia-500 via-purple-500 to-indigo-500 mx-auto"></span>
@@ -47,8 +47,8 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
             {!error && !loading && todos.length >= 1 ? (
                 todos.map((todo) =>
                     todo._id ? (
-                        <div key={todo._id} className="flex justify-between items-center mx-5 py-2 bg-pruple-500 border-white/10">
-                            <div className="flex gap-3 items-center">
+                        <div key={todo._id} className="flex justify-between items-center mx-5 py-2 bg-pruple-500 border-white/10 form-color">
+                            <div className="flex gap-3 items-center form-color">
                                 <label className="relative cursor-pointer">
                                     <input
                                         type="checkbox"
@@ -64,7 +64,7 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
                                             ? 'bg-gradient-to-tr from-fuchsia-500 via-purple-500 to-indigo-500 border-none'
                                             : 'border-transparent bg-transparent peer-hover:border-gradient-to-tr peer-hover:from-fuchsia-500 peer-hover:via-purple-500 peer-hover:to-indigo-500'
                                         }
-                                        border border-white/30
+                                        border border-white/30 
                                     `}>
                                         {todo.completed && (
                                             <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none">
@@ -76,7 +76,7 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
 
                                 {editingId !== todo._id ? (
                                     <span
-                                        className={`text-white ${todo.completed ? 'line-through text-white/40' : ''}`}
+                                        className={`text-white ${todo.completed ? 'line-through text-white/40' : ''} form-color`}
                                         onDoubleClick={() => {
                                             setEditingId(todo._id);
                                             setEditTitle(todo.title);
@@ -110,8 +110,8 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
                                 </span>
                             </div>
 
-                            <div className="flex gap-4 items-center">
-                                <span className="text-sm font-medium text-white/60">{formatDate(todo.createdAt)}</span>
+                            <div className="flex gap-4 items-center form-color">
+                                <span className="text-sm font-medium text-white/60 form-color">{formatDate(todo.createdAt)}</span>
                                 <Trash2
                                     onClick={() => deleteTodo(todo._id)}
                                     className="text-red-400 hover:text-red-500 transition-all duration-300 w-5 h-5 cursor-pointer"
@@ -121,9 +121,9 @@ export default function Todo({ todos, error, loading, deleteTodo, updateTodo }) 
                     ) : null
                 )
             ) : (
-                <div className="flex gap-2 justify-center my-5 text-white/70">
-                    <NotebookPen />
-                    <p>No todos here yet..</p>
+                <div className="flex gap-2 justify-center my-5 text-white/70 form-color">
+                    <NotebookPen className='form-color'/>
+                    <p className='form-color'>No todos here yet..</p>
                 </div>
             )}
         </div>

@@ -6,7 +6,7 @@ import { useEffect, useState } from'react';
 export default function TodoList({ todos, error, loading, deleteTodo, updateTodo }) {
 
   return (
-    <div>
+    <div className='form-color'>
         <div>
           <Todo todos = {todos} error = {error} deleteTodo={deleteTodo} updateTodo={updateTodo} loading = {loading} key={todos._id}/>
         </div>

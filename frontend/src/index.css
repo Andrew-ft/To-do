@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  background-color: #1D232A;
+}
+
+body {
+  height: 100vh;
+}
+
+svg {
+  background-color: transparent;
+}
+
+.form-color {
+  background-color: #20252D;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

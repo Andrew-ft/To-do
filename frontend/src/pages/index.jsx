@@ -174,8 +174,8 @@ export default function Index() {
       </div>
 
       <div className='w-full sm:w-2/3 mx-auto p-5 text-white rounded-xl bg-zinc-700 bg-opacity-10 shadow-md'>
-        <div className='flex justify-between w-4/5 mx-auto gap-100'>
-          <button onClick={checkAll} className='text-sm font-semibold btn btn-soft'>
+        <div className='flex justify-between w-4/5 mx-auto gap-100 form-color'>
+          <button onClick={checkAll} className='text-sm font-semibold btn btn-soft '>
             {allChecked ? 'Uncheck All' : 'Check All'}
           </button>
           <button onClick={clearCompleted} className='text-sm font-semibold text-red-500'>
@@ -193,17 +193,17 @@ export default function Index() {
           updateTodo={updateTodo}
         />
 
-        <div className='flex flex-wrap justify-center gap-7 text-sm'>
-          <span>{activeStatusTodos} active</span>
-          <span>{completedStatusTodos} completed</span>
-          <span>{totalTodos} total</span>
-          <div className='flex items-center gap-2'>
+        <div className='flex flex-wrap justify-center gap-7 text-sm form-color'>
+          <span className='form-color'>{activeStatusTodos} active</span>
+          <span className='form-color'>{completedStatusTodos} completed</span>
+          <span className='form-color'>{totalTodos} total</span>
+          <div className='flex items-center gap-2 form-color'>
             <ProgressBar percentage={completionPercentage} />
-            <span>{completionPercentage}%</span>
+            <span className='form-color'>{completionPercentage}%</span>
           </div>
         </div>
 
-        <div className='flex justify-center mt-5'>
+        <div className='flex justify-center mt-5 form-color'>
           <div className='join'>
             <button onClick={showAll} className='btn join-item btn-soft'>All</button>
             <button onClick={showActive} className='btn join-item btn-soft'>Active</button>
